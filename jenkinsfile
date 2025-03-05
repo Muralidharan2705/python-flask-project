@@ -37,8 +37,8 @@ post {
 
   always {
            sh 'echo Cleaning workspace.....'
-           sh ' docker rmi ${docker_image _name}'
-           cleanWs()
+           //sh ' docker rmi ${docker_image _name}'
+           //cleanWs()
            }
     success {
           sh ' echo Docker build was pushed successfully'
