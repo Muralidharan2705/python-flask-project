@@ -36,7 +36,7 @@ pipeline{
 post {
 
   always {
-           sh 'echo Cleaning workspace.....
+           sh 'echo Cleaning workspace.....'
            sh ' docker rmi ${docker_image _name}'
            cleanWs()
            }
