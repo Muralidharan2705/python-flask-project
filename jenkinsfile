@@ -1,15 +1,15 @@
-pipeline{
+pipeline {
     agent any 
 
-     environment{
+     environment {
            docker_image _name = 'muralidharan2705/pythonapp'
            docker_tag_name= 'latest'
            DOCKER_HUB = credentials('docker-hub-credentials')
         }
 
-      stages{
-         stage ('checkout'){
-           steps{
+      stages { 
+         stage('checkout') {
+           steps {
 
              git branch:'test', url: 'https://github.com/Muralidharan2705/python-flask-project.git'
              sh ' echo passed'
@@ -18,15 +18,15 @@ pipeline{
        }
 
 
-       stage ('build docker image'){
+       stage('build docker image') {
          steps {
 
                  sh ' docker build -t ${docker_image _name}:${docker_tag_name} .'
 
              }
           }
-       stage ('Docker login'){
-          step {
+       stage('Docker login') {
+          steps {
                 sh 'echo ${DOCKER_HUB_PSW} | docker login -u ${DOCKER_HUB_USR}  --password-stdin'
                 sh 'docker push ${docker_image _name}'
             }
