@@ -2,7 +2,7 @@ pipeline {
     agent any 
 
      environment {
-           docker_image _name = 'muralidharan2705/pythonapp'
+           docker_image_name = 'muralidharan2705/pythonapp'
            docker_tag_name= 'latest'
            DOCKER_HUB = credentials('docker-hub-credentials')
         }
