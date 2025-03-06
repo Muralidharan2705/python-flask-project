@@ -23,12 +23,12 @@ pipeline {
             }
         }
 
-        stage("Wait for Build") {
+     /*   stage("Wait for Build") {
             steps {
                 echo 'Waiting 5 minutes for deployment to complete before starting smoke testing'
                 sleep time: 300, unit: 'SECONDS'
             }
-        }
+        } */
 
         stage('Docker Login & Push') {
             steps {
