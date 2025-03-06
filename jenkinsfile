@@ -1,0 +1,59 @@
+pipeline {
+    agent any 
+
+    environment {
+        docker_image_name = 'muralidharan2705/pythonapp'
+        docker_tag_name = 'latest'
+        DOCKER_HUB = credentials('docker-hub-credentials')
+    }
+
+    stages { 
+        stage('Checkout') {
+            steps {
+                git branch: 'test', url: 'https://github.com/Muralidharan2705/python-flask-project.git'
+                sh 'echo Checkout completed successfully'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                    docker build -t ${docker_image_name}:${docker_tag_name} .
+                '''
+            }
+        }
+
+     /*   stage("Wait for Build") {
+            steps {
+                echo 'Waiting 5 minutes for deployment to complete before starting smoke testing'
+                sleep time: 300, unit: 'SECONDS'
+            }
+        } */
+
+        stage('Docker Login & Push') {
+            steps {
+                sh '''
+                    echo "${DOCKER_HUB_PSW}" | docker login -u "${DOCKER_HUB_USR}" --password-stdin
+                    docker push ${docker_image_name}:${docker_tag_name}
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'echo Cleaning workspace...'
+            // Uncomment the following line if you want to clean up images
+            // sh 'docker rmi ${docker_image_name}:${docker_tag_name}'
+            // cleanWs()  // Uncomment if workspace cleanup is required
+        }
+
+        success {
+            sh 'echo Docker image was built and pushed successfully'
+        }
+
+        failure {
+            sh 'echo Build has failed'
+        }
+    }
+}
